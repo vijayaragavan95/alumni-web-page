@@ -25,7 +25,8 @@
 	crossorigin="anonymous"></script>
 <script src="resources/js/home.js"></script>
 </head>
-<body>
+<body onload="url()">
+<div id="snackbar">You have been successfully Logged Out...</div>
 	<div id="login_room">
 		<c:url value="/j_spring_security_logout" var="logoutUrl" />
 	<form action="${logoutUrl}" method="post" id="logoutForm">
@@ -35,6 +36,14 @@
 	<script>
 		function formSubmit() {
 			document.getElementById("logoutForm").submit();
+		}
+		function errormessage() {
+		    var x = document.getElementById("error-div");
+		    if (x.style.display === "none") {
+		        x.style.display = "block";
+		    } else {
+		        x.style.display = "none";
+		    }
 		}
 	</script>
 
@@ -48,7 +57,7 @@
 		<!-- Button trigger modal -->
 		<div class="text-right"
 			style="padding-top: 0.5%; padding-right: 1.5%;">
-			<button type="button" class="btn btn-primary" data-toggle="modal"
+			<button type="button" id="login-button" class="btn btn-primary" data-toggle="modal"
 				data-target="#exampleModalCenter">Login or Sign Up</button>
 		</div>
 		<!-- Modal -->

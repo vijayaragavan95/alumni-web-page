@@ -1,11 +1,21 @@
 package com.alumni.web.controller;
 
+import java.io.IOException;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,11 +75,12 @@ public class MainController {
 
 	/**
 	 * both "normal login" and "login for update" shared this form.
+	 * @throws ScriptException 
 	 * 
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-			@RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) {
+			@RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) throws ScriptException {
 
 		ModelAndView model = new ModelAndView();
 		if (error != null) {
@@ -82,7 +93,7 @@ public class MainController {
 				model.addObject("targetUrl", targetUrl);
 				model.addObject("loginUpdate", true);
 			}
-			
+		
 		}
 
 //		if (logout != null) {
@@ -93,6 +104,17 @@ public class MainController {
 		return model;
 
 	}
+	
+//	@Component
+//	public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+//
+//	    @Override
+//	    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+//	            AuthenticationException exception) throws IOException, ServletException {
+//	        getRedirectStrategy().sendRedirect(request, response, "javascript:errormessage();");
+//
+//	    }
+//	}
 
 	/**
 	 * If the login in from remember me cookie, refer
